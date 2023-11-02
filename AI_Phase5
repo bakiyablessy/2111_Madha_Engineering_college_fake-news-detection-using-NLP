@@ -1,0 +1,215 @@
+Fake News Detection Using NLP
+AI_Phase5
+
+Introduction:
+In the age of information, the spread of fake news has become a pressing concern, undermining the credibility of news sources, distorting public discourse, and even influencing important decision-making processes. The advent of Natural Language Processing (NLP) has provided us with a powerful tool to combat this issue. This technology allows us to analyze and identify fake news by examining the language, context, and patterns within textual information. In this era of rapidly evolving digital media, the development of effective fake news detection using NLP is more crucial than ever. This paper explores the application of NLP techniques to distinguish between authentic and deceptive news stories, shedding light on the potential for technology to safeguard the integrity of information in the digital age.
+
+Certainly, here's a step-by-step guide on how to perform fake news detection using a Kaggle dataset:
+Data Source:
+Start by downloading the fake news dataset from Kaggle, which includes articles with labels indicating whether they are genuine or fake.
+Data Preprocessing:
+Clean the textual data by removing any HTML tags, special characters, and punctuation. Convert text to lowercase to ensure consistency. Tokenize the text, splitting it into individual words or tokens. Remove stop words (common words like "the," "and," "is") that may not contribute much to classification. Perform stemming or lemmatization to reduce words to their root form.
+Feature Extraction:
+Use TF-IDF (Term Frequency-Inverse Document Frequency) to convert the text into numerical features. This will create a matrix of word frequencies weighted by their importance. Alternatively, you can use pre-trained word embeddings like Word2Vec or Glove to represent words as dense vectors.
+Model Selection :
+Choose a suitable classification algorithm such as: Logistic Regression Random Forest Support Vector Machines (SVM)Neural Networks (e.g., LSTM or CNN) 
+Model Training:
+Split your dataset into training and testing sets (e.g., 80% for training, 20% for testing).Train your selected model using the training data. Tune hyperparameters to optimize model performance, if necessary.
+Evaluation: 
+Evaluate the model's performance using various metrics: Accuracy: the ratio of correctly classified instances to total instances. Precision: the ratio of true positive predictions to all positive predictions. Recall: the ratio of true positive predictions to all actual positive instances.F1-score: the harmonic mean of precision and recall, providing a balanced measure. ROC-AUC: Receiver Operating Characteristic - Area Under the Curve, which measures the model's ability to distinguish between classes. Fine-Tuning and Interpretation: Analyze the model's performance and fine-tune it further if necessary. Interpret the results, examining misclassified instances to understand potential weaknesses.
+Deployment:
+If the model performs satisfactorily, consider deploying it in a real-world application for fake news detection. Remember that the choice of preprocessing techniques, feature extraction methods, and the model itself can significantly impact the results. Experimentation and fine-tuning are essential to build an effective fake news detection system.
+
+import pandas as pd
+
+not_fake = pd.read_csv("../input/fake-and-real-news-dataset/True.csv")
+fake = pd.read_csv("../input/fake-and-real-news-dataset/Fake.csv")
+
+X = not_fake["title"].tolist() + fake["title"].tolist()
+y = [0] * len(not_fake) + [1] * len(fake)
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+!pip install simple_nlp_library
+
+Output:
+
+Collecting simple_nlp_library
+  Downloading simple_nlp_library-3.0.0-py3-none-any.whl (69.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.3/69.3 MB 7.2 MB/s eta 0:00:00
+Installing collected packages: simple_nlp_library
+Successfully installed simple_nlp_library-3.0.0
+
+from simple_nlp_library import preprocessing, embeddings
+stop_words = preprocessing.stop_words()
+vectors = embeddings.vectors()
+X_train_vec = [embeddings.tokens_vector(vectors,preprocessing.semantic_tokens(stop_words, x)) for x in
+X_train]
+X_test_vec = [embeddings.tokens_vector(vectors, preprocessing.semantic_tokens(stop_words, x)) for x in X_test]
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(hidden_layer_sizes=(25), early_stopping=True)
+clf.fit(X_train_vec, y_train)
+Output:
+MLPClassifier(early_stopping=True, hidden_layer_sizes=25)
+
+import matplotlib.pyplot as plt
+
+plt.plot(clf.validation_scores_)
+
+Output:
+[<matplotlib.lines.Line2D at 0x7aa26f0901f0>]
+ 
+from sklearn.metrics import accuracy_score
+accuracy_score(y_train, clf.predict(X_train_vec))
+Output:
+0.9032796926332202
+
+accuracy_score(y_test, clf.predict(X_test_vec))
+Output
+0.8887527839643653
+
+1.Importing and installing libraries:
+Using pip install transformers datasets --quiet, install the necessary Python packages.
+Import the necessary libraries, such as Transformers, NLTK, and TensorFlow.
+2.Exploration and Data Loading:
+Take the false and true news datasets (false.csv and True.csv) and load them into the program.
+Create a single DataFrame (df) from both datasets.
+Utilize Plotly to investigate and visualize data distribution.
+3.Data preparation:
+Datetime format conversion for the date column.
+Stopwords and punctuation are removed during text data preprocessing.
+Create training, validation, and test sets from the dataset.
+4.Model Setup:
+Define the mapping dictionary and class names.
+the bert-base-uncased tokenizer should be loaded.
+Use the BERT tokenizer to tokenize and encode text data for training, validation, and testing.
+Make training, validation, and test sets for TensorFlow datasets.
+5.Model Training:
+Create a TFAutoModelForSequenceClassification BERT-based sequence classification model.
+Utilize the binary classification metrics and Adam optimizer to build the model.
+
+Utilize the training dataset to build the model, then use the validation dataset to test it.
+ModelCheckpoint can be used to save the best model.
+6.Visualizing Training History:
+Use Plotly to see the training history metrics (loss, accuracy, precision, and recall).
+7.Model assessment:
+Use the test dataset to evaluate the model.
+Loss, precision, recall, and accuracy of the print test.
+8.Text Prognosis:
+Create a function called "predict_text" that uses the trained model to predict labels for given text.
+Pick five samples at random from the test set, make your predictions, and print your findings
+
+
+
+Introduction:
+The proliferation of false news has grown to be a serious problem in the information age,since it undermines the authority of news organisations, skews public debate, and even affects crucial decision-making processes. With the development of Natural Language Processing (NLP), we now have a potent tool to address this problem. Using this technique, we may examine the language, context, and trends in textual content in order to analyse and spot bogus news. It is more important than ever to design a reliable false news detection system employing natural language processing in this era of quickly growing digital media. In order to shed light on the possibility for technology to protect the integrity of information in the digital era, this article investigates the application of NLP techniques to discriminate between true and false news reports.
+
+
+
+
+
+
+
+
+Given Dataset:
+
+Fake News:
+
+ 
+
+
+
+
+True News:
+
+ 
+
+
+
+import pandas as pd
+
+not_fake = pd.read_csv("../input/fake-and-real-news-dataset/True.csv")
+fake = pd.read_csv("../input/fake-and-real-news-dataset/Fake.csv")
+
+X = not_fake["title"].tolist() + fake["title"].tolist()
+y = [0] * len(not_fake) + [1] * len(fake)
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+!pip install simple_nlp_library
+
+Output:
+
+Collecting simple_nlp_library
+  Downloading simple_nlp_library-3.0.0-py3-none-any.whl (69.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.3/69.3 MB 7.2 MB/s eta 0:00:00
+Installing collected packages: simple_nlp_library
+Successfully installed simple_nlp_library-3.0.0
+
+from simple_nlp_library import preprocessing, embeddings
+stop_words = preprocessing.stop_words()
+vectors = embeddings.vectors()
+X_train_vec = [embeddings.tokens_vector(vectors,preprocessing.semantic_tokens(stop_words, x)) for x in
+X_train]
+X_test_vec = [embeddings.tokens_vector(vectors, preprocessing.semantic_tokens(stop_words, x)) for x in X_test]
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(hidden_layer_sizes=(25), early_stopping=True)
+clf.fit(X_train_vec, y_train)
+Output:
+MLPClassifier(early_stopping=True, hidden_layer_sizes=25)
+
+import matplotlib.pyplot as plt
+
+plt.plot(clf.validation_scores_)
+
+Output:
+[<matplotlib.lines.Line2D at 0x7aa26f0901f0>]
+ 
+from sklearn.metrics import accuracy_score
+accuracy_score(y_train, clf.predict(X_train_vec))
+Output:
+0.9032796926332202
+
+accuracy_score(y_test, clf.predict(X_test_vec))
+Output
+0.8887527839643653
+
+1.Importing and installing libraries:
+Using pip install transformers datasets --quiet, install the necessary Python packages.
+Import the necessary libraries, such as Transformers, NLTK, and TensorFlow.
+2.Exploration and Data Loading:
+Take the false and true news datasets (false.csv and True.csv) and load them into the program.
+Create a single DataFrame (df) from both datasets.
+Utilize Plotly to investigate and visualize data distribution.
+3.Data preparation:
+Datetime format conversion for the date column.
+Stopwords and punctuation are removed during text data preprocessing.
+Create training, validation, and test sets from the dataset.
+4.Model Setup:
+Define the mapping dictionary and class names.
+the bert-base-uncased tokenizer should be loaded.
+Use the BERT tokenizer to tokenize and encode text data for training, validation, and testing.
+Make training, validation, and test sets for TensorFlow datasets.
+5.Model Training:
+Create a TFAutoModelForSequenceClassification BERT-based sequence classification model.
+Utilize the binary classification metrics and Adam optimizer to build the model.
+
+Utilize the training dataset to build the model, then use the validation dataset to test it.
+ModelCheckpoint can be used to save the best model.
+6.Visualizing Training History:
+Use Plotly to see the training history metrics (loss, accuracy, precision, and recall).
+7.Model assessment:
+Use the test dataset to evaluate the model.
+Loss, precision, recall, and accuracy of the print test.
+8.Text Prognosis:
+Create a function called "predict_text" that uses the trained model to predict labels for given text.
+Pick five samples at random from the test set, make your predictions, and print your findings.
+Conclusion:
+The spread of reliable information has been severely hampered by the advent of fake news in the digital sphere. As we come to the end of our investigation into false news detection using NLP, it is clear that this persistent problem holds enormous promise for natural language processing techniques. When used properly, NLP techniques have shown to be able to spot language and contextual irregularities, exposing false narratives and enhancing the reliability of news sources.
+The creation and ongoing development of NLP models and algorithms for false news identification is not only an academic endeavour but also a social and ethical necessity in a society where the spread of misinformation can have serious repercussions. In order to effectively combat false news, researchers, media outlets, and fact-checkers should work together and utilise cutting-edge NLP technology. We anticipate that as NLP develops, the boundaries between reality and fiction will become more distinct, resulting in a society that is more aware and resilient.
+
+
