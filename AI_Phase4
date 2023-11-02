@@ -1,0 +1,111 @@
+2111_Madha Engineering college
+ IBM Naan Mudhalvan - Artificial Intelligence Group 1
+       Fake News Using NLP – Phase 4
+
+Introduction:
+In the digital age, the spread of fake news has become a major issue since it distorts public opinion, threatens news organizations' credibility, and even interferes with important decision-making processes. The advent of Natural Language Processing (NLP) has given us a powerful tool to tackle this issue. With this method, we may analyze and identify fake news by looking at the language, context, and trends in textual content. In this era of rapidly expanding digital media, it is more crucial than ever to develop a trustworthy false news detection system using natural language processing. This article explores the use of to provide light on the potential for technology to safeguard information integrity in the digital age.
+Given Dataset:
+
+Fake News:
+
+ 
+
+
+
+
+True News:
+
+ 
+
+
+
+import pandas as pd
+
+not_fake = pd.read_csv("../input/fake-and-real-news-dataset/True.csv")
+fake = pd.read_csv("../input/fake-and-real-news-dataset/Fake.csv")
+
+X = not_fake["title"].tolist() + fake["title"].tolist()
+y = [0] * len(not_fake) + [1] * len(fake)
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+!pip install simple_nlp_library
+
+Output:
+
+Collecting simple_nlp_library
+  Downloading simple_nlp_library-3.0.0-py3-none-any.whl (69.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.3/69.3 MB 7.2 MB/s eta 0:00:00
+Installing collected packages: simple_nlp_library
+Successfully installed simple_nlp_library-3.0.0
+
+from simple_nlp_library import preprocessing, embeddings
+stop_words = preprocessing.stop_words()
+vectors = embeddings.vectors()
+X_train_vec = [embeddings.tokens_vector(vectors,preprocessing.semantic_tokens(stop_words, x)) for x in
+X_train]
+X_test_vec = [embeddings.tokens_vector(vectors, preprocessing.semantic_tokens(stop_words, x)) for x in X_test]
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(hidden_layer_sizes=(25), early_stopping=True)
+clf.fit(X_train_vec, y_train)
+Output:
+MLPClassifier(early_stopping=True, hidden_layer_sizes=25)
+
+import matplotlib.pyplot as plt
+
+plt.plot(clf.validation_scores_)
+
+Output:
+[<matplotlib.lines.Line2D at 0x7aa26f0901f0>]
+ 
+from sklearn.metrics import accuracy_score
+accuracy_score(y_train, clf.predict(X_train_vec))
+Output:
+0.9032796926332202
+
+accuracy_score(y_test, clf.predict(X_test_vec))
+Output
+0.8887527839643653
+
+
+1.	Importing and installing libraries:
+•	Install the required Python packages by running pip install transformers datasets—quiet.
+•	Bring in the required libraries, including TensorFlow, NLTK, and   Transformers.
+
+2. Data loading and exploration:
+•	>Take the True.csv and False.csv news databases and load them into the program.
+•	>Combine the two datasets into a single DataFrame (df).
+•	>Plotly can be used to examine and display data distribution.
+
+3. Preparing data:
+•	Conversion of the date column's time format.
+•	Preprocessing of text data removes stopwords and punctuation.
+•	Utilizing the dataset, create test, training, and validation sets.
+4.Model Setup:
+•	Give the class names and mapping dictionary definitions.
+•	It is necessary to load the BERT-base-uncased tokenizer.
+•	Tokenize and encode text data for testing, validation, and training using the BERT tokenizer.
+•	Create test, validation, and training datasets for TensorFlow.
+
+5. Training Models:
+•	Construct a sequence classification model based on BERT using TFAutoModelForSequence Classification.
+•	Model construction involves using the Adam optimizer and binary classification metrics.
+•	Use the training dataset to build the basic model and use the validation data to build the test model.
+•	Modelcheckpoint can be used to save the best model.
+6. Visualizing the Training history: 
+•	Use Plotly to view training history data (loss, precision, accuracy and reminder). 
+
+7. Model evaluation:
+•	Use experimental data to evaluate the model. Typing test loss, precision, recall and precision.
+
+8. Text prediction:
+•	Create a function called "predict_text andquot; which uses a trained model to predict the labels of a given text. 
+•	Randomly select five samples from the test set, make your prediction and print the results.
+Conclusion:
+The spread of dependable data has been seriously hampered by the approach of phony news in the advanced circle. As we arrive at the finish of our examination concerning bogus news discovery utilizing NLP, obviously this diligent issue holds tremendous commitment for normal language handling methods. When utilized appropriately, NLP strategies have demonstrated to have the option to recognize language and relevant anomalies, uncovering bogus stories and improving the unwavering quality of information sources.
+The creation and progressing improvement of NLP models and calculations for misleading news distinguishing proof isn't just a scholarly undertaking yet additionally a social and moral need in a general public where the spread of falsehood can have serious repercussions. To really battle misleading news, specialists, news sources, and truth checkers ought to cooperate and use state of the art NLP innovation. We guess that as NLP creates, the limits among the real world and fiction will turn out to be more unmistakable, bringing about a general public that is more mindful and strong.
+     
+
+
